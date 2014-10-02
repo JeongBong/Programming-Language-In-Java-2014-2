@@ -67,9 +67,11 @@ public class Pawn extends Piece {
 			newyPos += pieceColor;
 			newPosition = new Position(newxPos, newyPos);
 
-			if (!isAddable(newPosition)) break;
+			if (!isAddable(newPosition))
+				break;
 			moveAblePosition.add(newPosition);
-			if (!isEmptyPlace(newPosition)) break;
+			if (!isEmptyPlace(newPosition))
+				break;
 		}
 	}
 

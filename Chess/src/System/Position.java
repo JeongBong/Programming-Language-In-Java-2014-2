@@ -4,13 +4,13 @@ public class Position {
 
 	private PositionNum xPos;
 	private PositionNum yPos;
-	
-	public Position(int xPos, int yPos){
+
+	public Position(int xPos, int yPos) {
 		this.xPos = new PositionNum(xPos);
 		this.yPos = new PositionNum(yPos);
 
 	}
-		
+
 	public int getxPos() {
 		return xPos.getNo();
 	}
@@ -48,5 +48,5 @@ public class Position {
 		} else if (!yPos.equals(other.yPos))
 			return false;
 		return true;
-	}	
+	}
 }

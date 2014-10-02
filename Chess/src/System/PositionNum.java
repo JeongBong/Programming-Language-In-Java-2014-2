@@ -1,16 +1,16 @@
 package System;
 
 public class PositionNum {
-	
+
 	final static int MAXPOSITION = 7;
 	final static int MINPOSITION = 0;
 	final static int FAIL = -1;
 	private int positionNumber;
 
 	PositionNum(int integer) {
-		if (integer > MAXPOSITION||integer < MINPOSITION) {
+		if (integer > MAXPOSITION || integer < MINPOSITION) {
 			positionNumber = FAIL;
-		} else{
+		} else {
 			positionNumber = integer;
 		}
 	}

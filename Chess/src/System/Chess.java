@@ -12,7 +12,7 @@ import Unit.Unit.Identity;
 public class Chess {
 
 	public static Map<Position, Piece> Board;
-	public static Set<Position>attackAblePositionSet = new HashSet<Position>();
+	public static Set<Position> attackAblePositionSet = new HashSet<Position>();
 
 	static {
 		Board = new HashMap<Position, Piece>();
@@ -53,16 +53,16 @@ public class Chess {
 
 	static void positionInitializer() {
 		Iterator<Position> iterator = Board.keySet().iterator();
-		
+
 		while (iterator.hasNext()) {
 			Position key = (Position) iterator.next();
 			Board.get(key).resetPath();
 		}
 	}
-	
-	public static void main(String args[]){
+
+	public static void main(String args[]) {
 		Manager manager = new Manager();
 		manager.playChess();
 	}
-	
+
 }
