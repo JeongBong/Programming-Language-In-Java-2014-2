@@ -19,6 +19,7 @@ public class Queen extends Piece {
 		checkBishopPath(-1, 1);
 	}
 
+	// 두 함수가 다른게 없는데 왜 나눴는지 모르겠음.
 	private void checkRookPath(int xScale, int yScale) {
 		int newxPos = this.position.getxPos();
 		int newyPos = this.position.getyPos();

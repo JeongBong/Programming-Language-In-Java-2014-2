@@ -16,6 +16,14 @@ public class Chess {
 
 	static {
 		Board = new HashMap<Position, Piece>();
+		
+		// YG: Piece의 생성자에서 Chess.Board.put하는건 좋지 않음.
+		// 사용하지 않는 변수들이 이렇게나 많이 생기는 것도 좋지 않고.
+		// YG: Chess의 start나 init 같은 메소드를 만들고
+		// YG: 그 메소드를 실행시켜주면 Board를 리셋해주는 방식으로 고치기
+		// YG: init() { Board.put(position, new King(posigion, Identity.WHITE_KING); ... }
+				
+		
 		King W_King = new King(3, 0, Identity.WHITE_KING);
 		King B_King = new King(3, 7, Identity.BLACK_KING);
 		Queen W_Queen = new Queen(4, 0, Identity.WHITE_QUEEN);

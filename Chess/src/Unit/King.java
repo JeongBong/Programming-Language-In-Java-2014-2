@@ -8,6 +8,7 @@ public class King extends Piece {
 		super(xPosition, yPosition, id);
 	}
 
+	// YG: King이나 Knight는 이렇게 일일이 다 확인할거라면 addAccessiblePosition이랑 check-Path 두 함수가 나누어질 필요가 없음. 
 	@Override
 	void addAccessiblePosition() {
 		checkKingPath(1, 1);
