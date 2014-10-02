@@ -49,6 +49,7 @@ public class Manager {
 		return true;
 	}
 
+	// YG: String chessBoard[][] 보다는 Board 클래스를 만들어서 Board.toString()을 사용하는게 더 편하지 않을까?
 	private void readyNextTurn(Player player) {
 		String chessBoard[][] = new String[MAXWIDTH][MAXHEIGHT];
 		Iterator<Position> iterator = Chess.Board.keySet().iterator();
