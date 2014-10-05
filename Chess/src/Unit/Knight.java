@@ -4,30 +4,31 @@ import System.Position;
 
 public class Knight extends Piece {
 
-	public Knight(int xPosition, int yPosition, Identity id) {
-		super(xPosition, yPosition, id);
+	public Knight(Color color) {
+		super(color);
+		unicodeForPrint = (this.color.getNo() == 1) ? "\u2658" : "\u265E";
 	}
 
 	@Override
-	void addAccessiblePosition() {
-		checkKnightPath(1, 2);
-		checkKnightPath(1, -2);
-		checkKnightPath(2, 1);
-		checkKnightPath(2, -1);
-		checkKnightPath(-1, 2);
-		checkKnightPath(-1, -2);
-		checkKnightPath(-2, -1);
-		checkKnightPath(-2, 1);
+	void addAccessiblePosition(Position position_base) {
+		checkKnightPath(1, 2, position_base);
+		checkKnightPath(1, -2, position_base);
+		checkKnightPath(2, 1, position_base);
+		checkKnightPath(2, -1, position_base);
+		checkKnightPath(-1, 2, position_base);
+		checkKnightPath(-1, -2, position_base);
+		checkKnightPath(-2, -1,position_base);
+		checkKnightPath(-2, 1, position_base);
 	}
 
-	private void checkKnightPath(int xScale, int yScale) {
-		int newxPos = this.position.getxPos() + xScale;
-		int newyPos = this.position.getyPos() + yScale;
+	private void checkKnightPath(int xScale, int yScale, Position position_base) {
+		int newxPos = position_base.getxPos() + xScale;
+		int newyPos = position_base.getyPos() + yScale;
 		Position newPosition = new Position(newxPos, newyPos);
 
 		if (isAddable(newPosition)) {
-			moveAblePosition.add(newPosition);
-			attackAblePosition.add(newPosition);
+			moveAblePositionList.add(newPosition);
+			attackAblePositionList.add(newPosition);
 		}
 	}
 }

@@ -3,129 +3,118 @@ package System;
 import java.util.Iterator;
 
 import Unit.*;
-import Unit.Unit.Identity;
+import Unit.Unit.Color;
 
 public class Manager {
-	final static int MAXWIDTH = 8;
-	final static int MAXHEIGHT = 8;
-	Player player1;
-	Player player2;
-	boolean result;
+
+	Player player_white;
+	Player player_black;
+	boolean isGameContinue;
 
 	Manager() {
-		player1 = new Player(Identity.WHITE_PLAYER);
-		player2 = new Player(Identity.BLACK_PLAYER);
-		result = false;
+		player_white = new Player(Color.WHITE);
+		player_black = new Player(Color.BLACK);
+		isGameContinue = true;
 	}
 
-	int playChess() {
-		while (true) {
-			System.out.println("플레이어1 차례입니다.");
-			result = playTurn(player1);
-			if (!result)
-				return 0;
-			System.out.println("플레이어2 차례입니다.");
-			result = playTurn(player2);
-			if (!result)
-				return 1;
-		}
-	}
+	void startChess() {
+		Piece piece_chosen;
+		Player player_activated = player_black;
 
-	private boolean playTurn(Player player) {
-		Piece newPiece;
-		readyNextTurn(player);
-
-		if (isCheckMate(player)) {
-			System.out.println("움직일 체스말의 좌표값을 입력하세요.");
-			newPiece = player.choosePiece();
-			newPiece.move();
-			readyNextTurn(player);
-			if (isCheckMate(player)) {
-				System.out.println(player.id + "이 졌습니다.");
+		while (isGameContinue) {
+			player_activated = (player_activated.color.getNo() == 1) ? player_black : player_white;
+			updateGameInfo(player_activated);
+			
+			if (isCheck(player_activated)) {
+				isGameContinue = judgeWhetherContinue(player_activated);
 			}
-			return false;
-		}
-		System.out.println("움직일 체스말의 좌표값을 입력하세요.");
-		newPiece = player.choosePiece();
-		System.out.println("움직일 위치 좌표값을 입력하세요.");
-		newPiece.move();
-		return true;
-	}
-
-	// YG: String chessBoard[][] 보다는 Board 클래스를 만들어서 Board.toString()을 사용하는게 더 편하지 않을까?
-	private void readyNextTurn(Player player) {
-		String chessBoard[][] = new String[MAXWIDTH][MAXHEIGHT];
-		Iterator<Position> iterator = Chess.Board.keySet().iterator();
-		Chess.attackAblePositionSet.clear();
-
-		while (iterator.hasNext()) {
-			Position key = (Position) iterator.next();
-			updateBoard(chessBoard, key);
-			updateAttackAblePosition(player, key);
-		}
-		printBoard(chessBoard);
-	}
-
-	private void updateBoard(String[][] chessBoard, Position position) {
-		Piece newPiece = Chess.Board.get(position);
-		chessBoard[position.getxPos()][position.getyPos()] = newPiece.unicode;
-
-		for (int i = 0; i < MAXHEIGHT; i++) {
-			for (int j = 0; j < MAXWIDTH; j++) {
-				if (chessBoard[j][i] == null) {
-					chessBoard[j][i] = "ㅁ";
-				}
-			}
+			piece_chosen = player_activated.choosePiece();
+			player_activated.movePiece(piece_chosen);
 		}
 	}
 
+	private void updateGameInfo(Player player) {
+		Iterator<Position> boardIter = Board.chessBoard.keySet().iterator();
+		Board.attackAblePositionSet.clear();
+
+		while (boardIter.hasNext()) {
+			Position key_position = (Position) boardIter.next();
+			updateAttackAblePosition(player, key_position);
+		}
+		printBoard();
+		
+	}
+	
 	private void updateAttackAblePosition(Player player, Position position) {
-		Piece newPiece = Chess.Board.get(position);
+		Piece newPiece = Board.chessBoard.get(position);
 
 		if (player.isSameTeam(position))
 			return;
-		Chess.attackAblePositionSet.addAll(newPiece.attackAblePosition);
+		Board.attackAblePositionSet.addAll(newPiece.attackAblePositionList);
 	}
+	
+	private boolean judgeWhetherContinue(Player player_activated) {
+		Piece piece_chosen;
 
-	private void printBoard(String[][] chessBoard) {
-		IconPrinter printer = new IconPrinter();
-		for (int i = 0; i < MAXHEIGHT; i++) {
-			for (int j = 0; j < MAXWIDTH; j++) {
-				System.out.print(" " + chessBoard[j][i] + " ");
-			}
-			System.out.println();
+		piece_chosen = player_activated.choosePiece();
+		player_activated.movePiece(piece_chosen);
+		
+		updateGameInfo(player_activated);
+			
+		if (isCheck(player_activated)) {
+			System.out.println(player_activated.color.getNo() + "이 졌습니다.");
+				return false;
 		}
+		
+		return true;
 	}
 
-	private boolean isCheckMate(Player player) {
-		boolean isVictory = false;
-		Iterator<Position> iterator = Chess.Board.keySet().iterator();
 
-		while (iterator.hasNext()) {
-			Position key = (Position) iterator.next();
-			isVictory = judgeCheckMate(player, key);
-			if (isVictory)
-				return isVictory;
+	void printBoard(){
+		
+	for(int yPos=0;yPos<8;yPos++){
+		for(int xPos=0;xPos<8;xPos++){
+		Position key_forPrint = new Position(xPos, yPos);
+		if(Board.chessBoard.containsKey(key_forPrint)){
+			System.out.print(Board.chessBoard.get(key_forPrint).unicodeForPrint);
+		}else{
+			System.out.print("ㅁ");
 		}
-		return isVictory;
+		}
+		System.out.println();
 	}
+	}	
 
-	private boolean judgeCheckMate(Player player, Position position) {
-		boolean isCheckMate = false;
-		Piece piece = Chess.Board.get(position);
+
+	private boolean isCheck(Player player) {
+		boolean isCheck = false;
+		Iterator<Position> boardIter = Board.chessBoard.keySet().iterator();
+
+		while (boardIter.hasNext()) {
+			Position key_position = (Position) boardIter.next();
+			isCheck = judgeCheck(player, key_position);
+			if (isCheck) return isCheck;
+		}
+		return isCheck;
+	}
+	
+//	HACK: 아름답지 못하다.isCheck 고칠것. isNotCheck?
+	private boolean judgeCheck(Player player, Position position) {
+		boolean isCheck = false;
+		Piece piece_gonnaInspect = Board.chessBoard.get(position);
 
 		if (!player.isSameTeam(position))
-			return false;
-		if (piece.id.getNo() != 2 && piece.id.getNo() != 3)
-			return false;
-		if (Chess.attackAblePositionSet.contains(position)) {
+			return isCheck;
+		if (piece_gonnaInspect.unicodeForPrint != "\u2654" && piece_gonnaInspect.unicodeForPrint != "\u265A") //HACK: 유니코드는 여기 쓰는게 아니에요.
+			return isCheck;
+		if (Board.attackAblePositionSet.contains(position)) {
 			if (player.check == true)
-				return true;
-			isCheckMate = piece.moveAblePosition.isEmpty();
-			player.check = isCheckMate;
+				return isCheck == true;
+			isCheck = piece_gonnaInspect.moveAblePositionList.isEmpty();
+			player.check = isCheck;
 			System.out.println("체크입니다. 심사숙고하세요.");
 		}
-		return isCheckMate;
+		return isCheck;
 	}
 
 }
