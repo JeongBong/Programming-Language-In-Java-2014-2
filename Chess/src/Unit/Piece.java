@@ -1,16 +1,17 @@
-package Unit;
+package unit;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import System.*;
-
+import system.Board;
+import system.Position;
 
 abstract public class Piece extends Unit{
-	final static int maxMoveSize =7;
+	final static int maxMoveSize =7; //체스판의 크기가 8칸 이므로, 최대로 움직일 수 있는 거리는 7
+
+	private static final int INPUT_MISTAKE = -1;
 	
 	int moveCount;
-	public String unicodeForPrint;
+	String unicodeForPrint;
 	public ArrayList<Position> moveAblePositionList = new ArrayList<Position>();
 	public ArrayList<Position> attackAblePositionList = new ArrayList<Position>();
 
@@ -19,59 +20,52 @@ abstract public class Piece extends Unit{
 		this.moveCount = 0;
 	}
 
-	// YG: Board 클래스를 따로 만들게 된다면 move 함수도 Board 클래스로 옮기는게 적절할 듯. move(Piece selected);
-
-	public void resetMoveablePositionList(Position position_base) {
+	public void resetMoveablePositionList(Position basePosition) {
 		moveAblePositionList.clear();
-		addAccessiblePosition(position_base);
+		addAccessiblePosition(basePosition);
 	}
 
-	abstract void addAccessiblePosition(Position position_base);
+	abstract void addAccessiblePosition(Position basePosition);
 
-	void printAccessiblePath() {
-		Iterator<Position> iterator = moveAblePositionList.iterator();
-		while (iterator.hasNext()) {
-			System.out.println("x좌표: " + iterator.next().getxPos());
-			System.out.println("y좌표: " + iterator.next().getyPos());
-		}
-	}
-
-	boolean isAddable(Position newPosition) {
-		if (!isValidPosition(newPosition))
+	boolean isAddable(Position position) {
+		if (!isValidPosition(position))
 			return false;
-		if (!isEmptyPlace(newPosition) && isSameTeam(newPosition))
+		if (!isEmptyPlace(position) && isSameTeam(position))
 			return false;
 		return true;
 	}
 	
-	
-	void checkPath_Basic(int xScale, int yScale, Position position_base) {
-		int newxPos = position_base.getxPos();
-		int newyPos = position_base.getyPos();
-		Position newPosition;
+	//basePosition에서 가로/세로 방향으로 움직일 거리를 입력하여 이동가능한 경로. 퀸/룩/비숍이 사용
+	void checkBasicPath(int xScale, int yScale, Position basePosition) {
+		int xPos = basePosition.getxPos();
+		int yPos = basePosition.getyPos();
+		Position position;
 
 		for (int i = 0; i < maxMoveSize; i++) {
-			newyPos += yScale;
-			newxPos += xScale;
-			newPosition = new Position(newxPos, newyPos);
+			yPos += yScale;
+			xPos += xScale;
+			position = new Position(xPos, yPos);
 
-			if (!isAddable(newPosition))
+			if (!isAddable(position))
 				break;
-			moveAblePositionList.add(newPosition);
-			attackAblePositionList.add(newPosition);
-			if (!isEmptyPlace(newPosition) && !isSameTeam(newPosition))
+			moveAblePositionList.add(position);
+			attackAblePositionList.add(position);
+			if (!isEmptyPlace(position) && !isSameTeam(position))
 				break;
 		}
 
 	}
 	
+	//INPUT_MISTAKE인 경우는 보드의 범위를 벗어나는 경우
 	boolean isValidPosition(Position position) {
-		if ((position.getxPos() != -1) && (position.getyPos() != -1))
+		if ((position.getxPos() != INPUT_MISTAKE) && (position.getyPos() != INPUT_MISTAKE))
 			return true;
 		return false;
 	}
 
-	boolean isEmptyPlace(Position position) {
-		return !Board.chessBoard.containsKey(position);
+
+
+	public String getUnicodeForPrint() {
+		return unicodeForPrint;
 	}
 }

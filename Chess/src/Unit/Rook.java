@@ -1,18 +1,18 @@
-package Unit;
+package unit;
 
-import System.Position;
+import system.Position;
 
 public class Rook extends Piece {
 
 	public Rook(Color color) {
 		super(color);
-		unicodeForPrint = (this.color.getNo() == 1) ? "\u2656" : "\u265C";
+		unicodeForPrint = ((this.color == Color.WHITE) ? "\u2656" : "\u265C");
 	}
 
-	void addAccessiblePosition(Position position_base) {
-		checkPath_Basic(1,0, position_base);
-		checkPath_Basic(-1,0, position_base);
-		checkPath_Basic(0,-1, position_base);
-		checkPath_Basic(0,1, position_base);
+	void addAccessiblePosition(Position basePosition) {
+		checkBasicPath(1,0, basePosition);
+		checkBasicPath(-1,0, basePosition);
+		checkBasicPath(0,-1, basePosition);
+		checkBasicPath(0,1, basePosition);
 	}
 }

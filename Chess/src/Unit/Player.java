@@ -1,17 +1,18 @@
-package Unit;
+package unit;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import System.*;
+import system.Board;
+import system.Position;
 
 public class Player extends Unit {
-	public boolean check;
-	public Position position_gonnaRemove;
+	public boolean isChecked;
+	public Position gonnaRemovePosition;
 
-	public Player(Color black) {
-		this.color = black;
-		check = false;
+	public Player(Color color) {
+		this.color = color;
+		isChecked = false;
 	}
 
 	public Piece choosePiece() {
@@ -36,39 +37,53 @@ public class Player extends Unit {
 				continue;
 			}
 
-			position_gonnaRemove = position;
+			gonnaRemovePosition = position;
 			chosenPiece = Board.chessBoard.get(position);
 			chosenPiece.resetMoveablePositionList(position);
 			return chosenPiece;
 		}
 	}
 
-	public void movePiece(Piece piece_chosen) {
-		Piece piece_gonnaMove;
-
+	public void movePiece(Piece chosenPiece) {
+		Piece gonnaMovePiece;
 		System.out.println("움직일 위치의 좌표값을 입력하세요.");
-		Position position_gonnaMove = inputPosition();
+		Position gonnaMovePosition = inputPosition();
 
-		while (!piece_chosen.moveAblePositionList.contains(position_gonnaMove)) {
-			System.out.println("접근할 수 없습니다.");
-			System.out.println("다시 입력하세요.");
-			position_gonnaMove = inputPosition();
+		while (!chosenPiece.moveAblePositionList.contains(gonnaMovePosition)) {
+			System.out.println("접근할 수 없는 위치입니다. 다시 입력해주세요.");
+			gonnaMovePosition = inputPosition();
 		}
 
-		piece_gonnaMove = Board.chessBoard.get(position_gonnaRemove);
-		Board.chessBoard.put(position_gonnaMove, piece_gonnaMove);
+		gonnaMovePiece = Board.chessBoard.get(gonnaRemovePosition);
 
-		piece_gonnaMove.resetMoveablePositionList(position_gonnaMove);
-		piece_gonnaMove.moveCount++;
-		Board.chessBoard.remove(position_gonnaRemove);
+		executeEnpassant(gonnaMovePiece, gonnaMovePosition);//앙파상인지 확인하여 처리
+		Board.chessBoard.put(gonnaMovePosition, gonnaMovePiece);
+
+		gonnaMovePiece.resetMoveablePositionList(gonnaMovePosition);
+		gonnaMovePiece.moveCount++;
+
+		Board.chessBoard.remove(gonnaRemovePosition);
 
 	}
 
+	private void executeEnpassant(Piece gonnaMovePiece, Position gonnaMovePosition) {
+		Position beside;
+		if (gonnaMovePiece.unicodeForPrint == "\u2659"|| gonnaMovePiece.unicodeForPrint == "\u265F") {
+			if (isEmptyPlace(gonnaMovePosition) && gonnaMovePiece.attackAblePositionList.contains(gonnaMovePosition)) {
+				//공격가능한 리스트에 없었는데 이동했다면, 앙파상.
+				beside = new Position(gonnaMovePosition.getxPos(),gonnaRemovePosition.getyPos());
+				Board.chessBoard.remove(beside);
+			}
+		}
+	}
+
+	@SuppressWarnings("resource")
 	Position inputPosition() {
+		Position position;
 		int xPosition;
 		int yPosition;
 		Scanner sc = new Scanner(System.in);
-		Position position;
+
 		try {
 			System.out.print("X좌표: ");
 			xPosition = sc.nextInt();
@@ -81,4 +96,5 @@ public class Player extends Unit {
 		}
 		return position;
 	}
+
 }

@@ -1,34 +1,34 @@
-package Unit;
+package unit;
 
-import System.Position;
+import system.Position;
 
 public class Knight extends Piece {
 
 	public Knight(Color color) {
 		super(color);
-		unicodeForPrint = (this.color.getNo() == 1) ? "\u2658" : "\u265E";
+		unicodeForPrint = ((this.color == Color.WHITE) ? "\u2658" : "\u265E");
 	}
 
 	@Override
-	void addAccessiblePosition(Position position_base) {
-		checkKnightPath(1, 2, position_base);
-		checkKnightPath(1, -2, position_base);
-		checkKnightPath(2, 1, position_base);
-		checkKnightPath(2, -1, position_base);
-		checkKnightPath(-1, 2, position_base);
-		checkKnightPath(-1, -2, position_base);
-		checkKnightPath(-2, -1,position_base);
-		checkKnightPath(-2, 1, position_base);
+	void addAccessiblePosition(Position basePosition) {
+		checkKnightPath(1, 2, basePosition);
+		checkKnightPath(1, -2, basePosition);
+		checkKnightPath(2, 1, basePosition);
+		checkKnightPath(2, -1, basePosition);
+		checkKnightPath(-1, 2, basePosition);
+		checkKnightPath(-1, -2, basePosition);
+		checkKnightPath(-2, -1,basePosition);
+		checkKnightPath(-2, 1, basePosition);
 	}
 
-	private void checkKnightPath(int xScale, int yScale, Position position_base) {
-		int newxPos = position_base.getxPos() + xScale;
-		int newyPos = position_base.getyPos() + yScale;
-		Position newPosition = new Position(newxPos, newyPos);
+	private void checkKnightPath(int xScale, int yScale, Position basePosition) {
+		int xPos = basePosition.getxPos() + xScale;
+		int yPos = basePosition.getyPos() + yScale;
+		Position position = new Position(xPos, yPos);
 
-		if (isAddable(newPosition)) {
-			moveAblePositionList.add(newPosition);
-			attackAblePositionList.add(newPosition);
+		if (isAddable(position)) {
+			moveAblePositionList.add(position);
+			attackAblePositionList.add(position);
 		}
 	}
 }

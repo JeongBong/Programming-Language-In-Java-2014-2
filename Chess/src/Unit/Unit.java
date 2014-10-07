@@ -1,6 +1,7 @@
-package Unit;
+package unit;
 
-import System.*;
+import system.Board;
+import system.Position;
 
 abstract public class Unit {
 
@@ -23,4 +24,7 @@ abstract public class Unit {
 		return this.color.getNo() == Board.chessBoard.get(position).color.getNo();
 	}
 
+	boolean isEmptyPlace(Position position) {
+		return !Board.chessBoard.containsKey(position);
+	}
 }

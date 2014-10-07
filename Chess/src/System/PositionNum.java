@@ -1,17 +1,17 @@
-package System;
+package system;
 
 public class PositionNum {
 
-	final static int MAXPOSITION = 7;
-	final static int MINPOSITION = 0;
-	final static int FAIL = -1;
+	final static int MAX_POSITION = 7;
+	final static int MIN_POSITION = 0;
+	public final static int INPUT_MISTAKE = -1;
 	private int positionNumber;
 
-	PositionNum(int integer) {
-		if (integer > MAXPOSITION || integer < MINPOSITION) {
-			positionNumber = FAIL;
+	PositionNum(int inputNumber) {
+		if (inputNumber > MAX_POSITION || inputNumber < MIN_POSITION) {
+			positionNumber = INPUT_MISTAKE;
 		} else {
-			positionNumber = integer;
+			positionNumber = inputNumber;
 		}
 	}
 
