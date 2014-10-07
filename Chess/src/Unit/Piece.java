@@ -2,13 +2,11 @@ package unit;
 
 import java.util.ArrayList;
 
-import system.Board;
 import system.Position;
 
 abstract public class Piece extends Unit{
 	final static int maxMoveSize =7; //체스판의 크기가 8칸 이므로, 최대로 움직일 수 있는 거리는 7
 
-	private static final int INPUT_MISTAKE = -1;
 	
 	int moveCount;
 	String unicodeForPrint;
@@ -56,13 +54,6 @@ abstract public class Piece extends Unit{
 
 	}
 	
-	//INPUT_MISTAKE인 경우는 보드의 범위를 벗어나는 경우
-	boolean isValidPosition(Position position) {
-		if ((position.getxPos() != INPUT_MISTAKE) && (position.getyPos() != INPUT_MISTAKE))
-			return true;
-		return false;
-	}
-
 
 
 	public String getUnicodeForPrint() {

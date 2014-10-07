@@ -50,20 +50,23 @@ public class PlayManager {
 		BoardManager boardManager = new BoardManager();
 
 		Board.attackAblePositionSet.clear();
-
+		Board.moveAblePositionSet.clear();
+		
 		while (pieceIter.hasNext()) {
 			Position position = (Position) pieceIter.next();
-			updateAttackAblePosition(player, position);
+			updatePositionSet(player, position);
+			
 		}
 		boardManager.printBoard();
 	}
 	
-	private void updateAttackAblePosition(Player player, Position position) {
+	private void updatePositionSet(Player player, Position position) {
 
 		Piece piece = Board.chessBoard.get(position);
 
 		if (player.isSameTeam(position)) return;
 		Board.attackAblePositionSet.addAll(piece.attackAblePositionList);
+		Board.moveAblePositionSet.addAll(piece.moveAblePositionList);
 	}
 
 	
@@ -109,7 +112,7 @@ public class PlayManager {
 
 		if(!player.isSameTeam(isValidWhenPawn))
 			return false;
-		if(!(inspectedPiece.getUnicodeForPrint() == "\u2659") || (inspectedPiece.getUnicodeForPrint() == "\u265F"))
+		if(!(inspectedPiece.getUnicodeForPrint() == "\u2659" || inspectedPiece.getUnicodeForPrint() == "\u265F"))
 			return false;
 		if(isValidWhenPawn.getyPos()==7||isValidWhenPawn.getyPos()==0)
 			return true;
@@ -124,7 +127,7 @@ public class PlayManager {
 		Color pieceColor = Board.chessBoard.get(piecePos).color;
 		Board.chessBoard.remove(piecePos);
 		
-		System.out.println("어떤 piece로 바꾸시겠습니까? 1.퀸  2.룩  3.비숍  4.나이" );
+		System.out.println("어떤 piece로 바꾸시겠습니까? 1.퀸  2.룩  3.비숍  4.나이트" );
 		
 		switch(sc.nextInt()){
 		case 1 :

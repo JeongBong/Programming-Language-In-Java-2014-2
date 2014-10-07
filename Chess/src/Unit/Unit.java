@@ -4,6 +4,7 @@ import system.Board;
 import system.Position;
 
 abstract public class Unit {
+	static final int INPUT_MISTAKE = -1;
 
 	public Color color;
 
@@ -27,4 +28,13 @@ abstract public class Unit {
 	boolean isEmptyPlace(Position position) {
 		return !Board.chessBoard.containsKey(position);
 	}
+	
+	//INPUT_MISTAKE인 경우는 보드의 범위를 벗어나는 경우
+	boolean isValidPosition(Position position) {
+		if ((position.getxPos() != INPUT_MISTAKE) && (position.getyPos() != INPUT_MISTAKE))
+			return true;
+		return false;
+	}
+
+
 }
