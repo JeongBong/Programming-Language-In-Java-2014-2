@@ -9,54 +9,48 @@ abstract public class Piece extends Unit{
 
 	
 	int moveCount;
-	String unicodeForPrint;
-	public ArrayList<Position> moveAblePositionList = new ArrayList<Position>();
-	public ArrayList<Position> attackAblePositionList = new ArrayList<Position>();
+	public String unicode;
+	public ArrayList<Position> moveAblePosList = new ArrayList<Position>();
+	public ArrayList<Position> attackAblePosList = new ArrayList<Position>();
 
 	Piece(Color color) {
 		this.color = color;
 		this.moveCount = 0;
 	}
 
-	public void resetMoveablePositionList(Position basePosition) {
-		moveAblePositionList.clear();
-		addAccessiblePosition(basePosition);
+	public void resetMoveablePosList(Position basePos) {
+		moveAblePosList.clear();
+		addAccessiblePos(basePos);
 	}
 
-	abstract void addAccessiblePosition(Position basePosition);
+	abstract void addAccessiblePos(Position basePos);
 
-	boolean isAddable(Position position) {
-		if (!isValidPosition(position))
+	boolean isAddable(Position checkedPos) {
+		if (!isValidPos(checkedPos))
 			return false;
-		if (!isEmptyPlace(position) && isSameTeam(position))
+		if (!isEmptyPlace(checkedPos) && isSameTeam(checkedPos))
 			return false;
 		return true;
 	}
 	
 	//basePosition에서 가로/세로 방향으로 움직일 거리를 입력하여 이동가능한 경로. 퀸/룩/비숍이 사용
-	void checkBasicPath(int xScale, int yScale, Position basePosition) {
-		int xPos = basePosition.getxPos();
-		int yPos = basePosition.getyPos();
-		Position position;
+	void checkBasicPath(int xScale, int yScale, Position basePos) {
+		int xPos = basePos.getxPos();
+		int yPos = basePos.getyPos();
+		Position checkedPos;
 
 		for (int i = 0; i < maxMoveSize; i++) {
 			yPos += yScale;
 			xPos += xScale;
-			position = new Position(xPos, yPos);
+			checkedPos = new Position(xPos, yPos);
 
-			if (!isAddable(position))
+			if (!isAddable(checkedPos))
 				break;
-			moveAblePositionList.add(position);
-			attackAblePositionList.add(position);
-			if (!isEmptyPlace(position) && !isSameTeam(position))
+			moveAblePosList.add(checkedPos);
+			attackAblePosList.add(checkedPos);
+			if (!isEmptyPlace(checkedPos) && !isSameTeam(checkedPos))
 				break;
 		}
 
-	}
-	
-
-
-	public String getUnicodeForPrint() {
-		return unicodeForPrint;
 	}
 }

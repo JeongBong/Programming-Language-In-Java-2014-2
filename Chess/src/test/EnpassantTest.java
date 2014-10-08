@@ -18,12 +18,12 @@ public class EnpassantTest extends TestCase {
 	protected void setUp() throws Exception {
 		boardManager = new BoardManager();
 		playManager = new PlayManager();
+		Board.chessBoard.clear();
 		Board.chessBoard.put(new Position(3, 0), new King(Color.WHITE));
 		Board.chessBoard.put(new Position(3, 7), new King(Color.BLACK));
-		
 		Board.chessBoard.put(new Position(3, 1), new Pawn(Color.WHITE));
 		Board.chessBoard.put(new Position(4, 6), new Pawn(Color.BLACK));
-		boardManager.initPiecePosition();
+		boardManager.initPiecePos();
 
 		super.setUp();
 	}
@@ -31,7 +31,7 @@ public class EnpassantTest extends TestCase {
 	public void testEnpassant(){
 		playManager.playChess();
 		Position position = new Position(6,0);
-		assertEquals("\u265B", Board.chessBoard.get(position).getUnicodeForPrint());
+		assertEquals("\u265B", Board.chessBoard.get(position).unicode);
 
 	}
 	

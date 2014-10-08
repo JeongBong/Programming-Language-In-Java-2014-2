@@ -21,17 +21,17 @@ abstract public class Unit {
 		 }
 	}	
 		
-	public boolean isSameTeam(Position position) {
-		return this.color.getNo() == Board.chessBoard.get(position).color.getNo();
+	public boolean isSameTeam(Position pos) {
+		return this.color  == Board.chessBoard.get(pos).color;
 	}
 
-	boolean isEmptyPlace(Position position) {
-		return !Board.chessBoard.containsKey(position);
+	boolean isEmptyPlace(Position pos) {
+		return !Board.chessBoard.containsKey(pos);
 	}
 	
 	//INPUT_MISTAKE인 경우는 보드의 범위를 벗어나는 경우
-	boolean isValidPosition(Position position) {
-		if ((position.getxPos() != INPUT_MISTAKE) && (position.getyPos() != INPUT_MISTAKE))
+	boolean isValidPos(Position pos) {
+		if ((pos.getxPos() != INPUT_MISTAKE) && (pos.getyPos() != INPUT_MISTAKE))
 			return true;
 		return false;
 	}

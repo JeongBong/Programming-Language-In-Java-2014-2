@@ -51,13 +51,12 @@ public class BoardManager {
 	}
 
 	// 모든 Piece가 보드에 놓인 후에 Piece들 간의 관계를 다시 고려해야 한다.
-	public void initPiecePosition() {
-		Iterator<Position> boardIter = Board.chessBoard.keySet().iterator();
+	public void initPiecePos() {
+		Iterator<Position> pos = Board.chessBoard.keySet().iterator();
 
-		while (boardIter.hasNext()) {
-			Position keyPosition = (Position) boardIter.next();
-			Board.chessBoard.get(keyPosition).resetMoveablePositionList(
-					keyPosition);
+		while (pos.hasNext()) {
+			Position pieceIter = (Position) pos.next();
+			Board.chessBoard.get(pieceIter).resetMoveablePosList(pieceIter);
 		}
 	}
 
@@ -66,7 +65,7 @@ public class BoardManager {
 			for (int xPos = 0; xPos < MAX_BOARD_WIDTH; xPos++) {
 				Position boardIter = new Position(xPos, yPos);
 				if (Board.chessBoard.containsKey(boardIter)) {
-					System.out.print(Board.chessBoard.get(boardIter).getUnicodeForPrint());
+					System.out.print(Board.chessBoard.get(boardIter).unicode);
 				} else {
 					System.out.print("ㅁ");
 				}
