@@ -7,6 +7,7 @@ import java.util.Scanner;
 import system.Board;
 import system.Position;
 
+// YG: Player가 Unit을 상속받아야 할 이유가...?
 public class Player extends Unit {
 	private static final int LEFT = -1;
 	private static final int RIGHT = 1;

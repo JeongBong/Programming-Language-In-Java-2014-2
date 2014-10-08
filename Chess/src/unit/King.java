@@ -9,9 +9,9 @@ public class King extends Piece {
 		unicode = (this.color == Color.WHITE) ? "\u2654" : "\u265A";
 	}
 
-	// YG: King이나 Knight는 이렇게 일일이 다 확인할거라면 addAccessiblePosition이랑 check-Path 두 함수가 나누어질 필요가 없음. 
 	@Override
 	void addAccessiblePos(Position basePos) {
+		// YG: 2중 for문으로 줄여봅시다.
 		checkKingPath(1, 1, basePos);
 		checkKingPath(1, 0, basePos);
 		checkKingPath(1, -1, basePos);
@@ -35,6 +35,8 @@ public class King extends Piece {
 
 	@Override
 	protected boolean isAddable(Position pos) {
+		// YG: Piece의 isAddable과 중복되는 내용은
+		// YG: super.isAddable로 중복 제거할 수 있음
 		if (!isValidPos(pos))
 			return false;
 		if (!isEmptyPlace(pos) && isSameTeam(pos))

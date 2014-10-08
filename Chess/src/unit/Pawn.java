@@ -12,6 +12,8 @@ public class Pawn extends Piece {
 		unicode = ((this.color == Color.WHITE) ? "\u2659" : "\u265F");
 	}
 
+	
+	// YG: 코드를 쉽게 찾기 위해서 여기서 호출한 함수는 이 바로 아래에 쓴다던가 하는 방식으로.
 	@Override
 	public void resetMoveablePosList(Position basePos) {
 		moveAblePosList.clear();
@@ -38,7 +40,8 @@ public class Pawn extends Piece {
 				
 			return;
 		}
-
+		
+		// 앞으로 전진하는 경우 경로 탐색
 		for (int i = 0; i < yScale * direction; i++) {
 			checkedPos = new Position(xPos, yPos+yScale);		
 		

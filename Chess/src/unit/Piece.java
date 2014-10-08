@@ -23,6 +23,11 @@ abstract public class Piece extends Unit{
 		addAccessiblePos(basePos);
 	}
 
+	// YG: private 함수에서 add-로 시작하는 이름을 사용해서 햇갈림.
+	// YG: addSomething(Some some)은 해당 객체에 무언가 추가하기 위한 public 함수의 느낌이 남.
+	// YG: 내부적으로는 isAccessiblePos(pos)라는 함수를 통해서 확인 한 후,
+	// YG: movablePosList.add(pos) 로 동작하는 방식이 눈에 보이게 쓰이는게 바람직해보임.
+	// YG: 특히 폰에서 check와 add가 줄줄이 쓰이면서 check는 뭐하는건지, add는 뭐하는건지 알기가 힘들어짐.
 	abstract void addAccessiblePos(Position basePos);
 
 	boolean isAddable(Position checkedPos) {

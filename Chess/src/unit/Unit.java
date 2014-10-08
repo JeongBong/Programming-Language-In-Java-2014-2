@@ -3,6 +3,8 @@ package unit;
 import system.Board;
 import system.Position;
 
+//YG: 개인적으론 Player는 독립적으로 구현하고,
+//YG: Unit과 Piece를 합치는 것이 더 깔끔할 것 같음.
 abstract public class Unit {
 	static final int INPUT_MISTAKE = -1;
 

@@ -10,6 +10,7 @@ public class Queen extends Piece {
 	}
 
 	void addAccessiblePos(Position basePos) {
+		// YG: for문?
 		checkBasicPath(1,0, basePos);
 		checkBasicPath(-1,0, basePos);
 		checkBasicPath(0,1, basePos);
