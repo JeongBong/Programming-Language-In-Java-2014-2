@@ -1,29 +1,29 @@
-package System;
+package system;
 
 public class PositionNum {
 
-	final static int MAXPOSITION = 7;
-	final static int MINPOSITION = 0;
-	final static int FAIL = -1;
-	private int positionNumber;
+	final static int MAX_POSITION = 7;
+	final static int MIN_POSITION = 0;
+	public final static int INPUT_MISTAKE = -1;
+	private int positionNum;
 
-	PositionNum(int integer) {
-		if (integer > MAXPOSITION || integer < MINPOSITION) {
-			positionNumber = FAIL;
+	PositionNum(int inputNum) {
+		if (inputNum > MAX_POSITION || inputNum < MIN_POSITION) {
+			positionNum = INPUT_MISTAKE;
 		} else {
-			positionNumber = integer;
+			positionNum = inputNum;
 		}
 	}
 
 	int getNo() {
-		return positionNumber;
+		return positionNum;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + positionNumber;
+		result = prime * result + positionNum;
 		return result;
 	}
 
@@ -36,7 +36,7 @@ public class PositionNum {
 		if (getClass() != obj.getClass())
 			return false;
 		PositionNum other = (PositionNum) obj;
-		if (positionNumber != other.positionNumber)
+		if (positionNum != other.positionNum)
 			return false;
 		return true;
 	}
